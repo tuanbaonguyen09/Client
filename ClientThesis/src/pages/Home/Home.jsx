@@ -1,5 +1,3 @@
-import './Home.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Spline from '@splinetool/react-spline';
 import { useDispatch } from 'react-redux';
 import { setLoadingState } from '../../redux/Loading/Slice';

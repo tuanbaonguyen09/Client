@@ -1,14 +1,16 @@
 import Login from "../pages/Auth/Login";
 import Home from "../pages/Home/Home";
-import Dashboard from "../pages/Dashboard/Dashboard";
 import Layout from "../components/Interface/Layout/Layout";
-
+import Menu
+ from "../pages/Menu/Menu";
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 const publicRoutes = [
     {path: '/', component: Home},
     {path: '/auth', component: Login},
+    {path: '/menu', component: Menu},
     {path: '/dashboard', component: Dashboard}
 
 ]

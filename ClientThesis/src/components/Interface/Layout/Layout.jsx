@@ -23,7 +23,7 @@ const Layout = ({children}) => {
             }}
         >
             <Header/>
-            <div className="
+            <div className=" relative
             laptop:max-w-2xl laptop:m-auto
             px-4  w-full min-h-screen ">
                 {children}

@@ -1,4 +1,3 @@
-import './Login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import MetaMaskIcon from '../../assets/metamask.png'
 
@@ -41,9 +40,9 @@ const Login = () => {
 
     useEffect(() => {
         if(isConnected){
-            navigate('/dashboard')
+            navigate('/menu')
         }
-    }, isConnected)
+    }, [isConnected, navigate])
 
     return (
         <>  
