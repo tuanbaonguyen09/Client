@@ -1,37 +1,19 @@
 import './App.css'
-
-import Layout from './components/Interface/Layout/Layout'
+import { BrowserRouter as Router } from 'react-router-dom'
+import AnimatedRoutes from './routes/routes'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {fas} from '@fortawesome/free-solid-svg-icons'
-library.add(fas)
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { publicRoutes } from './routes/routes'
-
+import {fab} from '@fortawesome/free-brands-svg-icons'
+library.add(fas, fab)
 
 function App() {
-  return (
 
+    return (
         <Router>
-          <Routes>
-              {publicRoutes.map((route, index) => {
-                  const Page = route.component
-                  return (
-                      <Route
-                          key={index}
-                          path={route.path}
-                          element={
-                              <Layout>
-                                  <Page/>
-                              </Layout>
-                          }
-                      />
-                  )
-              })}
-          </Routes>
-      </Router>
-  )
+            <AnimatedRoutes/>
+        </Router>
+    )
 }
 
 export default App

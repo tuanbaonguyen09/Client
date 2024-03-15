@@ -18,6 +18,11 @@ export default {
       // => @media (min-width: 1920px) { ... }
     },
     extend: {
+      boxShadow:{
+        1: 'rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px',
+        2: 'rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em',
+        'clicked': '#D6D6E7 0 3px 7px inset'
+      },
       colors: {
         main: {
           100: '#EDF1D6',
