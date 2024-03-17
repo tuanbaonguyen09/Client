@@ -1,7 +1,13 @@
 import Input from "../../components/UI/Input/Input";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {motion} from 'framer-motion'
+
+import {useDispatch} from 'react-redux'
+import { initCrop } from "../../redux/Crop/Slice";
+
 const Form = () => {
+    const dispatch = useDispatch()
+
     const textVariant = {
         default: {
             visibility: 'hidden',
@@ -36,6 +42,7 @@ const Form = () => {
             flex justify-between items-center font-semibold text-2xl text-primary-50">
                 Information
                 <motion.div
+                    onClick={() => dispatch(initCrop())}
                     initial="default"
                     whileHover="hover"
                     variants={mainVariant}

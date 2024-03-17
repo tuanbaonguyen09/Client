@@ -8,7 +8,7 @@ const initialState ={
 
 export const login = createAsyncThunk(
     'user/login',
-    async (data,{rejectWithValue}) => {
+    async (_,{rejectWithValue}) => {
         try {
             if (typeof window.ethereum === 'undefined') {
                 alert('Please install MetaMask.');

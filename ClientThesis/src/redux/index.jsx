@@ -4,6 +4,7 @@ import loginReducer from './Connect/Slice'
 import controlerReducer from './Controller/Slice'
 import historyReducer from './History/History'
 import sidebarReducer from './Sidebar/Slice'
+import cropReducer from './Crop/Slice'
 
 const store = configureStore({
     reducer:{
@@ -11,7 +12,8 @@ const store = configureStore({
         login: loginReducer,
         controller: controlerReducer,
         history: historyReducer,
-        sidebar: sidebarReducer
+        sidebar: sidebarReducer,
+        crop: cropReducer,
     }
 })
 
