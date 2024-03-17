@@ -5,20 +5,20 @@ import { Link } from "react-router-dom"
 const Menu = () => {
     const menuItems = [
         {
-            path: '/dashboard',
+            path: '/menu/dashboard',
             name: 'Dashboard',
             icon: 'fa-chart-line',
             className: 'col-span-2'
         },
 
         {
-            path: '/form',
+            path: '/menu/form',
             name: 'Form',
             icon: 'fa-file-lines',
             className: 'col-span-2'
         },
         {
-            path: '/crops-display',
+            path: '/menu/crops-display',
             name: 'Display',
             icon: 'fa-display',
             className: 'col-span-2'
@@ -29,7 +29,7 @@ const Menu = () => {
         //     icon: 'fa-wifi',
         // },
         {
-            path: '/history',
+            path: '/menu/history',
             name: 'History',
             icon: 'fa-solid fa-clock',
             className: 'col-span-2'

@@ -27,6 +27,10 @@ export const Slice = createSlice({
     name: 'user',
     initialState,
     reducers:{
+        resetAccount: state => {
+            state.currentAccount = null;
+            state.isConnected = false;
+          },
     },
     extraReducers: (builder) => {
         builder
@@ -40,5 +44,7 @@ export const Slice = createSlice({
             });
     },
 })
+
+export const {resetAccount} = Slice.actions
 
 export default Slice.reducer

@@ -32,14 +32,13 @@ const Device = ({device}) => {
     const controllersCount = useSelector((state) => state.history.controllersCount)
 
     useEffect(() => {
-        setIsEnabled(currentAccount === '0x0d22c5b0dbd93aeb3ba644218363d5282b40fb5e')
+        // setIsEnabled(currentAccount === '0x0d22c5b0dbd93aeb3ba644218363d5282b40fb5e')
         const fetchData = async () => {
             const response = await fetchControllerInfo(`relays.relay${device.index}`)
             dispatch(updateSignal([device.index, parseInt(response.data.value)]))
         }
         fetchData()
     }, [currentAccount])
-
     const handleChange = async (nextChecked) => {
         const options = {
             timeZone: 'Asia/Ho_Chi_Minh',
@@ -105,7 +104,7 @@ const Device = ({device}) => {
                     ) : (
                         <img className='max-w-16' src={MainPump} />
                     )}
-                <p className='font-sans font-semibold'>This is device name</p>
+                <p className='font-sans font-semibold'>{nameOfDevice}</p>
                 <Switch
                     onChange={handleChange}
                     isEnabled={isEnabled}

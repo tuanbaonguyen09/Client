@@ -17,17 +17,7 @@ import { TransactionProvider } from './context/TransactionContext'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      <TransactionProvider>
-          <SensorDataProvider>
-              <ControllerProvider>
-                  <CropInfoProvider>
-                      <AdafruitProvider>
-                          <App />
-                      </AdafruitProvider>
-                  </CropInfoProvider>
-              </ControllerProvider>
-          </SensorDataProvider>
-      </TransactionProvider>
+        <App />
     </Provider>
   </React.StrictMode>,
 )

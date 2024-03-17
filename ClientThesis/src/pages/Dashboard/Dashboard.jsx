@@ -23,12 +23,14 @@ const Dashboard = () => {
 
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 2,
-        slidesToScroll: 1,
+        slidesToShow: 4,
+        slidesToScroll: 4,
         vertical: true,
+        arrows: false,
+        swipe: true,
     }
     return (
         <>  
@@ -38,7 +40,7 @@ const Dashboard = () => {
             absolute w-full max-w-[90%] min-h-[calc(100dvh)] py-12
             ">
 
-            <Slider className="col-span-2" {...settings}>
+            <Slider  className="col-span-2" {...settings}>
                 {renderDevice(8)}
             </Slider>
             </div>
