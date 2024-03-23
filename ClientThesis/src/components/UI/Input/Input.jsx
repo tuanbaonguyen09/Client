@@ -1,11 +1,10 @@
 import classes from './Input.module.css'
 
 
-
 const Input = ({label, ...attributes}) => (
     <div className={classes.item}>
         <input className={`
-            rounded-lg 
+            rounded-lg font-mono
             w-full py-2 px-2.5 text-main-400 leading-tight focus:outline-none`}
             {...attributes}
         />

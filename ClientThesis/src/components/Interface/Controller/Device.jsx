@@ -1,19 +1,19 @@
-import { useEffect, useState, useContext } from 'react'
+import { useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {deviceIndexToNameMapping} from '../../../utils/Mapping'
+import { updateFertilizers } from '../../../redux/Crop/Slice'
+import { fetchControllerInfo, publishControllerInfo } from '../../../redux/Adafruit/Slice'
 
-import { ControllerContext } from '../../../context/ControllerContext'
-import { AdafruitContext } from '../../../context/AdafruitContext'
-
-import { updateSignal } from '../../../redux/Controller/Slice'
+import { addControllerInfoToBlockChain, updateSignal } from '../../../redux/Controller/Slice'
 import { pushControllerInfo } from '../../../redux/History/History'
-import { resetAll } from '../../../redux/History/History'
+import {resetAll} from '../../../redux/History/History'
 
 import RegionPump from '../../../assets/Dashboard/Device/Region.png'
 import NutritionMixing from '../../../assets/Dashboard/Device/Nutritious.png'
 import MainPump from '../../../assets/Dashboard/Device/MainPump.png'
-import Switch from '../Switch/Switch'
+import Switch from '../../UI/Switch/Switch'
+
 
 const Device = ({device}) => {
     const nameOfDevice = deviceIndexToNameMapping[device.index]
@@ -21,24 +21,17 @@ const Device = ({device}) => {
     const deviceGroup2 = device.index == 4 || device.index == 5 || device.index == 6
 
     const dispatch = useDispatch()
-    const [isEnabled, setIsEnabled] = useState(false)
-
-    const { addControllersInfoToBlockchain } = useContext(ControllerContext)
-    const { fetchControllerInfo, publishControllerInfo } = useContext(AdafruitContext)
-
-    const currentAccount = useSelector((state) => state.login.currentAccount)
+    const isConnected = useSelector((state) => state.login.isConnected)
     const controllerSignals = useSelector((state) => state.controller.controllerSignals)
     const controllers = useSelector((state) => state.history.controllersInfo)
     const controllersCount = useSelector((state) => state.history.controllersCount)
 
+
+    const feedName = `relays.relay${device.index}`
     useEffect(() => {
-        // setIsEnabled(currentAccount === '0x0d22c5b0dbd93aeb3ba644218363d5282b40fb5e')
-        const fetchData = async () => {
-            const response = await fetchControllerInfo(`relays.relay${device.index}`)
-            dispatch(updateSignal([device.index, parseInt(response.data.value)]))
-        }
-        fetchData()
-    }, [currentAccount])
+        dispatch(fetchControllerInfo({device,feedName}))
+    }, [])
+
     const handleChange = async (nextChecked) => {
         const options = {
             timeZone: 'Asia/Ho_Chi_Minh',
@@ -79,15 +72,19 @@ const Device = ({device}) => {
             }
             console.log(arrayFertilizers)
             // updateFertilizers(arrayFertilizers)
-            addControllersInfoToBlockchain(controllers)
+            // addControllersInfoToBlockchain(controllers)
+            dispatch(updateFertilizers(arrayFertilizers))
+            dispatch(addControllerInfoToBlockChain())
             dispatch(resetAll())
         }
-
+        //Publish NOW
         dispatch(pushControllerInfo(controller))
         dispatch(updateSignal([device.index, nextChecked]))
-
+        console.log(controllerSignals)
         // publish to adafruit
-        publishControllerInfo(`relays.relay${device.index}`, Number(nextChecked))
+        const feedName = `relays.relay${device.index}`
+        const value = Number(nextChecked)
+        dispatch(publishControllerInfo({feedName,value}))
     }
 
     const deviceStatus = controllerSignals[device.index - 1] == 1
@@ -95,21 +92,24 @@ const Device = ({device}) => {
     return (
         <>
             <div className='
-            flex gap-2 items-center justify-between
-            bg-white rounded-2xl px-4 py-2'>
+            absolute w-full h-full
+            flex gap-3 items-center justify-center
+            bg-white rounded-lg px-3 py-1'>
                 {deviceGroup1 ? (
-                        <img className='max-w-16' src={NutritionMixing} />
+                        <img className='max-w-[72px]' src={NutritionMixing} />
                     ) : deviceGroup2 ? (
-                        <img className='max-w-16' src={RegionPump} />
+                        <img className='max-w-[72px]' src={RegionPump} />
                     ) : (
-                        <img className='max-w-16' src={MainPump} />
+                        <img className='max-w-[72px]' src={MainPump} />
                     )}
-                <p className='font-sans font-semibold'>{nameOfDevice}</p>
-                <Switch
-                    onChange={handleChange}
-                    isEnabled={isEnabled}
-                    checked={deviceStatus}
-                />
+                <div className='h-full flex flex-col justify-evenly'>
+                    <p className='font-semibold text-sm'>{nameOfDevice}</p>
+                    <Switch
+                        onChange={handleChange}
+                        isEnabled={isConnected}
+                        checked={deviceStatus}
+                    />
+                </div>
             </div>
         </>
     )

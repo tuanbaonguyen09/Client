@@ -8,12 +8,6 @@ import './index.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { CropInfoProvider } from './context/CropInfoContext'
-import { ControllerProvider } from './context/ControllerContext'
-import { SensorDataProvider } from './context/SensorDataContext'
-import { AdafruitProvider } from './context/AdafruitContext'
-import { TransactionProvider } from './context/TransactionContext'
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>

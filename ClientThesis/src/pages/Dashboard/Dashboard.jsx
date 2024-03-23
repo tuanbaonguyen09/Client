@@ -1,51 +1,40 @@
-import Device from "../../components/UI/Device/Device"
-import Slider from "react-slick"
+import Controller from "../../components/Interface/Controller/Controller"
+import SensorList from "../../components/Interface/Sensors/SensorList"
+import ChartPortal from "../../components/Interface/ChartProtal/ChartProtal"
+import { useSelector } from "react-redux"
+
 const Dashboard = () => {
-    
-    const renderDevice = (number) => {
-        const devices = []
-
-        for (let i = 1; i <= number; i++) devices.push(i)
-
-        return devices.map((item, index) => {
-            return (
-                <Device
-                    key={index}
-                    device={{
-                        name: `Device ${item}`,
-                        index: item,
-                    }}
-                />
-            )
-        })
-    }
-
-
-
-    const settings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        vertical: true,
-        arrows: false,
-        swipe: true,
-    }
+    const activeSensor = useSelector(state => state.dashboard.sensorActiveID)
     return (
-        <>  
+        <div className="border border-main-300 
+        absolute w-full left-0 h-full p-[inherit] py-12
+        "
+        >
             <div className="
-            grid grid-cols-2
-            p-[inherit]
-            absolute w-full max-w-[90%] min-h-[calc(100dvh)] py-12
+                grid grid-rows-8 relative h-full
+                gap-y-2
             ">
-
-            <Slider  className="col-span-2" {...settings}>
-                {renderDevice(8)}
-            </Slider>
+            <div className="row-span-3 relative mx-1">  
+                <div className="
+                rounded-lg 
+                p-4 flex flex-col justify-center
+                bg-white relative w-full h-full">
+                {activeSensor !== -1 ? <ChartPortal chartIndex={activeSensor}/>
+                    : 
+                    <div className="font-mono text-2xl font-bold text-main-300">
+                        No sensor detected, please select one 
+                    </div>
+                }
             </div>
-
-        </>
+            </div>
+            <div className="row-span-2 relative w-full">
+                <SensorList/>
+            </div>
+            <div className="row-span-2 relative w-full">
+                <Controller/>
+            </div>
+            </div>
+        </div>
     )
 }
 

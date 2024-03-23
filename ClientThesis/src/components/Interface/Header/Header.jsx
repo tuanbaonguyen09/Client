@@ -6,8 +6,9 @@ import { resetAccount } from '../../../redux/Connect/Slice';
 import {useNavigate} from 'react-router-dom'
 const Header = () => {
     const dispatch = useDispatch()
-    const isConnected = useSelector((state) => state.login.isConnected)
     const navigate = useNavigate()
+    
+    const isConnected = useSelector((state) => state.login.isConnected)
 
     const textVariant ={
         default: {
@@ -24,7 +25,7 @@ const Header = () => {
         },
         hover:{
             background: '#79ac78',
-            width: 120,
+            width: 80,
         }
     }
 
@@ -36,14 +37,10 @@ const Header = () => {
     return (
         <header 
         className='
-            absolute top-0
-            w-screen
-            px-4 py-2.5
+            absolute top-0 z-20
+            w-screen px-4 py-2.5
             flex justify-between items-center
-            bg-transparent
-            text-black
-            text-3xl
-            z-20
+            bg-transparent text-black text-3xl           
         '>  
             {
                 isConnected ?
@@ -54,7 +51,7 @@ const Header = () => {
                     animate="default"
                     variants={mainVariant}
                     className='
-                    group w-11 h-11 rounded-full
+                    group w-6 h-6 rounded-full
                     flex justify-center items-center
                     bg-white '>
 
@@ -64,7 +61,7 @@ const Header = () => {
                         group-hover:hidden
                         text-2xl text-primary-500'/> 
                     <motion.p
-                    className='absolute text-sm font-semibold uppercase text-main-100'
+                    className='absolute text-sm font-semibold text-main-100'
                     variants={textVariant}
                     >Log out</motion.p>
                 </motion.div>

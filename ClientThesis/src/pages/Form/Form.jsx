@@ -3,10 +3,25 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {motion} from 'framer-motion'
 
 import {useDispatch} from 'react-redux'
-import { initCrop } from "../../redux/Crop/Slice";
+import { addCropToBlockChain, initCrop, setFormData } from "../../redux/Crop/Slice";
+
+
 
 const Form = () => {
     const dispatch = useDispatch()
+    
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        dispatch(setFormData(
+            {name: name, value: value}
+        ));
+      };
+
+    const handleSubmit = () => {
+        console.log('Submitting...')
+        dispatch(addCropToBlockChain())
+    }
+
 
     const textVariant = {
         default: {
@@ -63,40 +78,40 @@ const Form = () => {
                     <Input
                             // className="col-span-2"
                             required={true}
-                            name='crop-name'
+                            name='cropType'
                             type='text'
                             label='Crop Name'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
                 <div className="col-span-1">
                     <Input
                             // className="col-span-2"
                             required={true}
-                            name='crop-no'
-                            type='text'
+                            name='noOfCrops'
+                            type='number'
                             label='No.'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
                 <div className="col-span-4">
                     <Input
                             // className="col-span-2"
                             required={true}
-                            name='crop-plant-date'
-                            type='text'
+                            name='plantingDate'
+                            type='date'
                             label='Planting Date'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
                 <div className="col-span-4">
                     <Input
                             // className="col-span-2"
                             required={true}
-                            name='crop-month-harvest'
-                            type='text'
+                            name='harvestDate'
+                            type='number'
                             label='No. month to harvest'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
                 <div className="col-span-4">
@@ -106,7 +121,7 @@ const Form = () => {
                             name='fertilizers'
                             type='text'
                             label='Fertilizers'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
                 <div className="col-span-4">
@@ -116,7 +131,7 @@ const Form = () => {
                             name='pesticides'
                             type='text'
                             label='Pesticides'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
                 <div className="col-span-4">
@@ -126,7 +141,7 @@ const Form = () => {
                             name='diseases'
                             type='text'
                             label='Diseases'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
                 <div className="col-span-4">
@@ -136,11 +151,12 @@ const Form = () => {
                             name='additionalInfo'
                             type='text'
                             label='Additional Information'
-                            // handleChange={handleChange}
+                            onChange={handleChange}
                         />   
                 </div>
             </form>
-            <button className="
+            <button onClick={handleSubmit}
+            className="
             bg-main-100 rounded-md w-fit px-5 py-1 self-end
              text-lg font-semibold font-mono text-primary-500
             focus:outline-none

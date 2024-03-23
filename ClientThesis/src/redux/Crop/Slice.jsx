@@ -5,23 +5,6 @@ import { cropInfoABI, cropInfoAddress } from '../../constant'
 import { setLoadingState } from '../Loading/Slice'
 import { login } from '../Connect/Slice'
 
-// export const login = createAsyncThunk(
-//     'user/',
-//     async (data,{rejectWithValue}) => {
-//         try {
-//             if (typeof window.ethereum === 'undefined') {
-//                 alert('Please install MetaMask.');
-//                 return rejectWithValue('MetaMask not installed');
-//             }
-//             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-//             return accounts[0]; // Return the first account as the fulfilled action payload
-//         } catch (error) {
-//             console.error(error);
-//             return rejectWithValue(error.toString());
-//         }
-//     }
-// )
-
 const { ethereum } = window
 const createEthContract = () => {
     const provider = new ethers.providers.Web3Provider(ethereum)
@@ -84,7 +67,6 @@ export const getAllCropsInfo = createAsyncThunk(
                     additionalInfo: crop.additionalInfo,
                     actualHarvestDate: crop.harvestDate,
                 }))
-                console.log(structuredCrops)
                 return structuredCrops
             } else {
                 console.log('Ethereum is not present')
@@ -155,6 +137,105 @@ export const initCrop = createAsyncThunk(
     }
 )
 
+//Add crop to Block Chain
+export const addCropToBlockChain = createAsyncThunk(
+    'crop/addCropToBlockChain', 
+    async (_,{getState, dispatch}) => {
+        try {
+            if (ethereum) {
+                const state = getState()
+                const cropInfoContract = createEthContract()
+
+                const {
+                    cropType,
+                    plantingDate,
+                    harvestDate,
+                    fertilizers,
+                    pesticides,
+                    diseases,
+                    additionalInfo,
+                    noOfCrops,
+                } = state.crop.formData
+
+                //convert date to Unix timestamp
+                const [yearPlantingDate, monthPlantingDate, dayPlantingDate] =
+                    plantingDate.split('-')
+
+                const unixPlantingDate =
+                    Date.parse(
+                        `${yearPlantingDate}-${monthPlantingDate}-${dayPlantingDate}T00:00:00Z`
+                    ) / 1000
+
+                const arrayFertilizers = fertilizers !== '' ? fertilizers.split(', ') : []
+                const arrayPesticides = pesticides !== '' ? pesticides.split(', ') : []
+                const arrayDiseases = diseases !== '' ? diseases.split(', ') : []
+
+                console.log('Start Adding...')
+                const cropHash = await cropInfoContract.addCropInfo(
+                    cropType,
+                    unixPlantingDate,
+                    harvestDate,
+                    arrayFertilizers,
+                    arrayPesticides,
+                    arrayDiseases,
+                    additionalInfo,
+                    noOfCrops
+                )
+                dispatch(setLoadingState(true))
+                await cropHash.wait()
+                dispatch(setLoadingState(false))
+
+                window.alert('Add the crop information successfully :)')
+
+                const cropsCount = await cropInfoContract.getNumberOfCrop()
+                return cropsCount
+
+            } else {
+                console.log('No ethereum object')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+)
+
+//
+const isFertilizersExistInAllCrops = (cropsCount, cropInfo, fertilizers) => {
+    for (let i = 0; i < cropsCount; i++) {
+        for (let j = 0; j < fertilizers.length; j++) {
+            if (!cropInfo[i].fertilizers.includes(fertilizers[j])) return false
+        }
+    }
+    return true
+}
+
+//Update fertilizers 
+export const updateFertilizers = createAsyncThunk (
+    'crop/updateFertilizers', 
+    async (fertilizers, {getState, dispatch}) => {
+        try {
+            if (ethereum) {
+                const cropInfoContract = createEthContract()
+                const state = getState()
+
+                if (!isFertilizersExistInAllCrops(state.crop.cropInfo, fertilizers)) {
+                    const updateCropsHash = await cropInfoContract.addFertilizers(fertilizers)
+
+                    dispatch(setLoadingState(true))
+                    await updateCropsHash.wait()
+                    dispatch(setLoadingState(false))
+                }
+            } else {
+                console.log('No ethereum object')
+            }
+        }   catch (error) {
+            console.log(error)
+        }
+    }
+)
+
+
+//Main Slice
 export const Slice = createSlice({
     name: 'crop',
     initialState: {
@@ -172,12 +253,19 @@ export const Slice = createSlice({
         }
     },
     reducers: {
+        setFormData : (state, action) => {
+            const { name, value } = action.payload;
+            if (name in state.formData) {
+                state.formData[name] = value;
+            } else {
+                console.warn(`Tried to set formData with unknown field: ${name}`);
+            }
+        },
 
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchCropData.fulfilled, (state, action) => {
-                state.currentAccount = action.payload
+            .addCase(fetchCropData.fulfilled, () => {
                 getAllCropsInfo()
             })
             .addCase(fetchCropData.rejected, (action) => {
@@ -190,10 +278,16 @@ export const Slice = createSlice({
             .addCase(initCrop.fulfilled, (state, action) => {
                 state.cropsCount = action.payload
             })
+            .addCase(addCropToBlockChain.fulfilled, (state, action) => {
+                state.cropsCount = action.payload
+            })
+            .addCase(updateFertilizers.fulfilled, (state, action) => {
+                getAllCropsInfo() 
+            })
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { pushControllerInfo, resetAll } = Slice.actions
+export const {setFormData} = Slice.actions
 
 export default Slice.reducer

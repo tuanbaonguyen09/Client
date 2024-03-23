@@ -7,3 +7,10 @@
 .item > input:valid ~ label {
     @apply text-primary-50 opacity-100 py-0 px-2 text-sm bg-transparent transform -translate-x-2 -translate-y-5;
 }
+
+input[type='date']:required:invalid::-webkit-datetime-edit {
+    color: transparent;
+}
+input[type='date']:focus::-webkit-datetime-edit {
+    color: #7a9d54 !important;
+}

@@ -6,24 +6,37 @@ import Form from "../pages/Form/Form";
 
 import Layout from "../components/Interface/Layout/Layout";
 
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 
 
-const AnimatedRoutes = () => {
-    const isConnected = useSelector((state) => state.login.isConnected)
-    const navigate = useNavigate()
-    const publicRoutes = [
-        {path: '/', component: Home},
-        {path: '/auth', component: Login, loader: () => isConnected && navigate('/menu')},
-        {path: '/menu',component: Menu},
-        {path: '/menu/dashboard', component: Dashboard},
-        {path: '/menu/form', component: Form}
-    ]
+const publicRoutes = [
+    {path: '/', component: Home},
+    {path: '/auth', component: Login},
+    // {path: '/menu',component: Menu},
+    // {path: '/menu/dashboard', component: Dashboard},
+    // {path: '/menu/form', component: Form}
+]
+
+const privateRoutes = [
+    {path: '/menu',component: Menu},
+    {path: '/menu/dashboard', component: Dashboard},
+    {path: '/menu/form', component: Form}
+]
+
+
+const AnimatedRoutes = ({children}) => 
+    <AnimatePresence mode="wait">
+    {children}
+    </AnimatePresence>
+    
+
+const MainRoutes = () => {
+    const isLogged = useSelector((state) => state.login.isConnected)
     const location = useLocation()
     return (
-        <AnimatePresence mode="wait">
+            <AnimatedRoutes>
                 <Routes location={location} key={location.pathname}>
                     {publicRoutes.map((route, index) => {
                         const Page = route.component
@@ -36,16 +49,29 @@ const AnimatedRoutes = () => {
                                         <Page/>
                                     </Layout>
                                 }
-                                loader={route.loader}
+                            />
+                        )
+                    })}
+                    {privateRoutes.map((route, index) => {
+                        const Page = route.component
+                        return (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                element={
+                                    <Layout>
+                                        {isLogged ? <Page/> : <Navigate to= '/' replace/>}
+                                    </Layout>
+                                }
                             />
                         )
                     })}
                 </Routes>
-        </AnimatePresence>
+            </AnimatedRoutes>
     )
 }
 
 
 
 
-export default AnimatedRoutes
+export default MainRoutes
