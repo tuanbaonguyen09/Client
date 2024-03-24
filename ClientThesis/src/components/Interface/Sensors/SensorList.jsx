@@ -1,13 +1,7 @@
 import CustomSlider from "../../UI/Slider/CustomSlider"
 import Sensor from "./Sensor"
-import { useState } from "react"
-import {  useSelector } from 'react-redux'
 
 const SensorList = () => {
-    const [active, setIsActive] = useState({
-        sensorID: -1,
-    })
-
     const dummySensorList = [
         //for rendering UI
         {

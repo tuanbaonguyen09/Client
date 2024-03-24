@@ -29,7 +29,7 @@ const Menu = () => {
         //     icon: 'fa-wifi',
         // },
         {
-            path: '/menu/history',
+            path: '/menu/history/select',
             name: 'History',
             icon: 'fa-solid fa-clock',
             className: 'col-span-2'

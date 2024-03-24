@@ -6,6 +6,25 @@ import { fetchSensorData, fetchSensorData2 } from '../../../redux/Adafruit/Slice
 import {useDispatch, useSelector} from 'react-redux'
 import { setSensorActiveID } from '../../../redux/Dashboard/Dashboard'
 
+const sensorType = {
+    air: {
+        background : "bg-neutral-400",
+        icon  :"fa-wind",
+        text: "text-neutral-400"
+    },
+    water: {
+        background : "bg-blue-300",
+        icon  :"fa-water",
+        text: "text-blue-300"
+    },
+    earth: {
+        background : "bg-yellow-700",
+        icon : "fa-seedling",
+        text: "text-yellow-700"
+
+    }
+
+}
 const Sensor = ({input}) => {
     const dispatch = useDispatch()
     const [sensorValue, setSensorValue] = useState(0)
@@ -54,25 +73,6 @@ const Sensor = ({input}) => {
         }
     }, [])
 
-    const sensorType = {
-        air: {
-            background : "bg-neutral-400",
-            icon  :"fa-wind",
-            text: "text-neutral-400"
-        },
-        water: {
-            background : "bg-blue-300",
-            icon  :"fa-water",
-            text: "text-blue-300"
-        },
-        earth: {
-            background : "bg-yellow-700",
-            icon : "fa-seedling",
-            text: "text-yellow-700"
-
-        }
-
-    }
 
     return( 
         <div 
@@ -129,4 +129,5 @@ const Sensor = ({input}) => {
     )
 }
 
+export {sensorType}
 export default Sensor

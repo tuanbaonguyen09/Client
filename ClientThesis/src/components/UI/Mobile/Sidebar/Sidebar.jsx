@@ -67,6 +67,12 @@ const homeItem = [
         protected: true,
 
     },
+    {
+        name: 'History', 
+        path: '/menu/history',
+        protected: true,
+
+    },
 ] 
 
 

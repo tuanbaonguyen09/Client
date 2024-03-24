@@ -7,12 +7,12 @@ const Dashboard = () => {
     const activeSensor = useSelector(state => state.dashboard.sensorActiveID)
     return (
         <div className="border border-main-300 
-        absolute w-full left-0 h-full p-[inherit] py-12
+        absolute w-full left-0 h-full p-[inherit] py-14
         "
         >
             <div className="
-                grid grid-rows-8 relative h-full
-                gap-y-2
+                grid grid-rows-7 relative h-full
+                gap-y-3
             ">
             <div className="row-span-3 relative mx-1">  
                 <div className="

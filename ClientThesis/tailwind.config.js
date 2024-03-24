@@ -23,7 +23,7 @@ export default {
         2: 'rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em',
         'clicked': '#D6D6E7 0 3px 7px inset',
         'clicked-menu': '#40513B 0 3px 7px inset',
-
+        'select' : 'rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px'
       },
       colors: {
         main: {

@@ -4,7 +4,6 @@ import { login } from "../Connect/Slice";
 import { ethers } from 'ethers'
 import { controllerABI, controllerAddress } from "../../constant";
 const { ethereum } = window
-
 //Create Controller Contact 
 const createControllerContract = () => {
     // const privateKey = import.meta.env.VITE_PRIVATE_KEY //to use this, create .env at root and include your private key there
@@ -104,7 +103,11 @@ export const Slice = createSlice({
                 console.error('Connection failed:', action.payload)
             })
             .addCase(getAllControllersInfo.fulfilled, (state, action) => {
-                state.controllersInfo = action.payload
+                const sortedSensorsData = action.payload.sort(
+                    (sensorData1, sensorData2) =>
+                        new Date(sensorData2.createAt) - new Date(sensorData1.createAt)
+                )
+                state.controllersInfo = sortedSensorsData
             })
             .addCase(addControllerInfoToBlockChain.fulfilled, (state, action) => {
                 state.controllersCount = action.payload
