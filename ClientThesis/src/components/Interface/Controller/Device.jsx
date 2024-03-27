@@ -94,16 +94,16 @@ const Device = ({device}) => {
             <div className='
             absolute w-full h-full
             flex gap-3 items-center justify-center
-            bg-white rounded-lg px-3 py-1'>
+            bg-white rounded-lg px-3 py-2'>
                 {deviceGroup1 ? (
-                        <img className='max-w-[72px]' src={NutritionMixing} />
+                        <img className='max-w-[64px]' src={NutritionMixing} />
                     ) : deviceGroup2 ? (
-                        <img className='max-w-[72px]' src={RegionPump} />
+                        <img className='max-w-[64px]' src={RegionPump} />
                     ) : (
-                        <img className='max-w-[72px]' src={MainPump} />
+                        <img className='max-w-[64px]' src={MainPump} />
                     )}
                 <div className='h-full flex flex-col justify-evenly'>
-                    <p className='font-semibold text-sm'>{nameOfDevice}</p>
+                    <p className='font-bold text-sm'>{nameOfDevice}</p>
                     <Switch
                         onChange={handleChange}
                         isEnabled={isConnected}

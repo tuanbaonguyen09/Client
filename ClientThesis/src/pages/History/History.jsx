@@ -27,7 +27,6 @@ const History = () => {
     const reversedControllerInfo = [...controllersInfo].reverse()
 
 
-    console.log(sensorsData)
     const contractAddressUrl = `https://sepolia.etherscan.io/address/${controllerAddress}`
     const sensorAddressUrl = `https://sepolia.etherscan.io/address/${sensorDataAddress}`
 
@@ -49,12 +48,10 @@ const History = () => {
         return(
             <>
             {currrentItems && currrentItems.map((item, index) => (
-                <>
-                    {
-                        deviceType === "controller" ? <ControllerItem index={index} key={index} controller={item}/>
-                        : <SensorItem index={index} key={index} sensor={item} />
-                    }
-                </>
+                        
+                deviceType === "controller" ? <ControllerItem index={index} key={index} controller={item}/>
+                : <SensorItem index={index} key={index} sensor={item} />
+                    
             ))}
         </>)
 
@@ -136,13 +133,13 @@ const History = () => {
                     {controller.createAt}:{' '}
                 </span> */}
                 <div className='flex justify-between'>
-                    <p className='font-semibold text-xl text-primary-400'>
+                    <p className='font-semibold text-base text-primary-400'>
                         {controller.deviceName}
                     </p>    
-                    <FontAwesomeIcon icon="fa-solid fa-power-off" className={`text-xl ${signal === 'on' ? 'text-green-400': 'text-red-500'}`}/>
+                    <FontAwesomeIcon icon="fa-solid fa-power-off" className={`text-base ${signal === 'on' ? 'text-green-400': 'text-red-500'}`}/>
                 </div>
                 <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-2  text-sm'> 
+                    <div className='flex items-center gap-2  text-xs'> 
                                 <FontAwesomeIcon
                                     icon='fa-solid fa-clock'
                                     className='text-primary-400'
@@ -159,15 +156,15 @@ const History = () => {
     }
 
     const SensorItem = ({sensor, index}) => {
-        const historyLine = `${sensor.sensorType} = ${sensor.value}${
-            NameToUnitMapping[sensor.sensorType]
-        }`
+        // const historyLine = `${sensor.sensorType} = ${sensor.value}${
+        //     NameToUnitMapping[sensor.sensorType]
+        // }`
 
         return (
-            <li className='w-full py-1 rounded border-b font-mono text-lg flex justify-between items-center'>
+            <li key={index} className='w-full py-1 rounded border-b font-mono text-base flex justify-between items-center'>
                 <div className='flex flex-col'>
                     <span
-                        className="text-sm text-neutral-400"
+                        className="text-xs text-neutral-400"
                     >
                         {sensor.createAt}:{' '}
                     </span>
@@ -199,18 +196,18 @@ const History = () => {
     return (
         <>
             <div className='absolute w-full h-full left-0 flex flex-col py-12 px-[inherit]'>
-                    <ul className='relative flex flex-col gap-3 w-full h-auto bg-white rounded-lg py-4 px-5 justify-between items-center'>
-                        <p className='text-2xl font-bold text-main-300 self-start'>{deviceType === "controller" ? `Controller History` : `Sensor History`}</p>
+                    <ul className='relative flex flex-col gap-2 w-full h-auto bg-white rounded-lg py-4 px-5 justify-between items-center'>
+                        <p className='text-lg font-bold text-main-300 self-start'>{deviceType === "controller" ? `Controller History` : `Sensor History`}</p>
                         <a 
                         href={deviceType === "controller" ? contractAddressUrl : sensorAddressUrl}
-                        className='font-mono text-sm self-start underline text-primary-400 -mt-3 ml-0.5'>
+                        className='font-mono text-xs self-start underline text-primary-400 -mt-3 ml-0.5'>
                             View more at EtherScan
                         </a>
-                        <PaginatedItems itemsPerPage={9} items={deviceType=== "controller" ? reversedControllerInfo : sensorsData}/>
+                        <PaginatedItems itemsPerPage={8} items={deviceType=== "controller" ? reversedControllerInfo : sensorsData}/>
                         <div className='absolute bottom-1 right-0 p-[inherit]'>
                             <FontAwesomeIcon 
                             onClick={deviceType=== "controller" ? handleExportControllerInfoToExcel :handleExportSensorsDataToExcel}
-                            icon="fa-solid fa-file-export"  className='text-2xl text-main-300 hover:text-main-100'/>
+                            icon="fa-solid fa-file-export"  className='text-lg text-main-300 hover:text-main-100'/>
                         </div>
                     </ul>
             </div>

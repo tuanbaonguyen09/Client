@@ -6,10 +6,8 @@ import { letSideBarClosed} from '../../../../redux/Sidebar/Slice';
 import {NavLink} from 'react-router-dom'
 
 const Item = ({item}) => {
-    const isLogged = useSelector(state => state.login.isConnected)
-    const protectedState = (isLogged && item.protected) || (!isLogged && !item.protected)
+    // const protectedState = (isLogged && item.protected) || (!isLogged && !item.protected)
     return (
-        protectedState && (
         <motion.div 
         className='
         transform
@@ -29,9 +27,6 @@ const Item = ({item}) => {
             </NavLink>
         </motion.div>
         )
-
-
-    )
 }
 
 
@@ -43,13 +38,12 @@ const homeItem = [
         path: '/',
     },
     {
-        name: 'Login', 
-        path: '/auth',
-    },
-    {
         name: 'Creator', 
         path: '/creator',
     },
+] 
+
+const connectedItem = [
     {
         name: 'Menu', 
         path: '/menu',
@@ -58,27 +52,25 @@ const homeItem = [
     {
         name: 'Dashboard', 
         path: '/menu/dashboard',
-        protected: true,
-
     },
     {
         name: 'Form', 
         path: '/menu/form',
-        protected: true,
-
     },
     {
         name: 'History', 
         path: '/menu/history',
-        protected: true,
-
     },
-] 
-
+    {
+        name: 'Display', 
+        path: '/menu/crops-display',
+    },
+]
 
 
 const NavBar = () => {
     const dispatch = useDispatch()
+    const isLogged = useSelector(state => state.login.isConnected)
     return createPortal(
         <motion.div
             className='absolute right-0 top-0 z-50 w-full h-full bg-primary-400 p-16 pt-40' 
@@ -97,6 +89,11 @@ const NavBar = () => {
             icon="fa-solid fa-xmark" className='hover:cursor-pointer hover:opacity-35 text-4xl text-red-400 absolute top-2.5 right-0 pr-[inherit]'/>
             <nav className='flex flex-col gap-6 w-fit'>
                 {homeItem.map((item, index) => {
+                    return (
+                        <Item key={index} item={item}/>
+                    )
+                })}
+                {isLogged && connectedItem.map((item, index) => {
                     return (
                         <Item key={index} item={item}/>
                     )

@@ -11,7 +11,7 @@ const Switch = ({onChange, checked, isEnabled}) => {
             onColor='#5D9C59'
             offColor='#DF2E38'
             className='mySwitch'
-            height={25}
+            height={24}
             handleDiameter={18}
         />
     )

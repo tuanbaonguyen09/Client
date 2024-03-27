@@ -53,19 +53,17 @@ export const getAllCropsInfo = createAsyncThunk(
         try {
             if (ethereum) {
                 const cropInfoContract = createEthContract()
-
                 const availableCrops = await cropInfoContract.getAllCropsInfo()
-
                 const structuredCrops = availableCrops.map((crop) => ({
-                    cropId: crop.cropId,
+                    cropId: crop.cropId.toString(),//BigNumber to String (non-serialization)
                     cropType: crop.cropType,
                     plantingDate: new Date(crop.plantingDate.toNumber() * 1000).toLocaleString(),
-                    harvestDate: crop.monthsToHavest,
+                    harvestDate: crop.monthsToHavest.toString(),
                     fertilizers: crop.fertilizers,
                     pesticides: crop.pesticides,
                     diseases: crop.diseases,
                     additionalInfo: crop.additionalInfo,
-                    actualHarvestDate: crop.harvestDate,
+                    actualHarvestDate: crop.harvestDate, 
                 }))
                 return structuredCrops
             } else {
@@ -79,13 +77,27 @@ export const getAllCropsInfo = createAsyncThunk(
 
 // Get crop info
 export const getCropInfo = createAsyncThunk(
-    'crop/setCropInfo',
-    async (cropID) => {
+    'crop/getCropInfo',
+    async (cropID, {dispatch}) => {
         try {
             if (ethereum) {
+                dispatch(setLoadingState(true))
                 const cropInfoContract = createEthContract()
                 const cropInfoHash = await cropInfoContract.getCropInfo(cropID)
-                return cropInfoHash
+                const structuredCrop = {
+                    cropType: cropInfoHash.cropType,
+                    plantingDate: new Date(
+                        cropInfoHash.plantingDate.toNumber() * 1000
+                    ).toLocaleString(),
+                    harvestDate: parseInt(cropInfoHash.monthsToHavest),
+                    fertilizers: cropInfoHash.fertilizers.join(', ') || '',
+                    pesticides: cropInfoHash.pesticides.join(', ') || '',
+                    diseases: cropInfoHash.diseases.join(', ') || '',
+                    additionalInfo: cropInfoHash.additionalInfo,
+                    actualHarvestDate: cropInfoHash.harvestDate,
+                }
+                dispatch(setLoadingState(false))
+                return structuredCrop
             }else {
                 console.log('Ethereum is not present')
             }
@@ -233,12 +245,36 @@ export const updateFertilizers = createAsyncThunk (
         }
     }
 )
+export const getCropNumberAndLocalSaving = createAsyncThunk('crop/getCropNumberAndLocalSaving',  
+    async () => {
+        try {
+            if (ethereum) {
+                const cropInfoContract = createEthContract()
+                const currentCropsCount = await cropInfoContract.getNumberOfCrop()
 
+                window.localStorage.setItem('cropsCount', currentCropsCount)
+            } else {
+                console.log('No ethereum object')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+})
 
 //Main Slice
 export const Slice = createSlice({
     name: 'crop',
     initialState: {
+        singleCropInfo: {
+            cropType: '',
+            plantingDate: '',
+            harvestDate: 0,
+            fertilizers: '',
+            pesticides: '',
+            diseases: '',
+            additionalInfo: '',
+            actualHarvestDate: '',
+        },
         cropInfo: [],
         cropsCount: localStorage.getItem('cropsCount'),
         formData: {
@@ -265,6 +301,9 @@ export const Slice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getCropInfo.fulfilled, (state,action) => {
+                state.singleCropInfo = action.payload
+            })
             .addCase(fetchCropData.fulfilled, () => {
                 getAllCropsInfo()
             })

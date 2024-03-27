@@ -46,7 +46,6 @@ const Login = () => {
 
     return (
         <>  
-            <NavArrow className='bottom-6 flex-row-reverse' direction="left" name="home" to="/"/>
             <motion.div
                 transition={{
                     duration: 0.5,

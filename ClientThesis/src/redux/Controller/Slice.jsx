@@ -3,6 +3,7 @@ import { login } from "../Connect/Slice";
 
 import { ethers } from 'ethers'
 import { controllerABI, controllerAddress } from "../../constant";
+import { setLoadingState } from "../Loading/Slice";
 const { ethereum } = window
 //Create Controller Contact 
 const createControllerContract = () => {
@@ -32,9 +33,10 @@ export const fetchControllerData = createAsyncThunk(
 //GEt all controllers Info 
 export const getAllControllersInfo = createAsyncThunk(
     'controller/getAllControllersInfo',
-    async () => {
+    async (_,{dispatch}) => {
         try {
             if(ethereum) {
+                dispatch(setLoadingState(true))
                 const controllerContract = createControllerContract()
                 const availableControllersInfo = await controllerContract.getAllControllersInfo()
         
@@ -43,6 +45,8 @@ export const getAllControllersInfo = createAsyncThunk(
                     createAt: controller.createAt,
                     value: parseInt(controller.value),
                 }))
+                dispatch(setLoadingState(false))
+
                 return structuredControllersInfo
             } else {
                 //todo

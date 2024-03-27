@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import { ethers } from 'ethers'
 import { sensorDataABI, sensorDataAddress } from '../../constant'
 import { login } from '../Connect/Slice'
+import { setLoadingState } from '../Loading/Slice'
 
 const { ethereum } = window
 
@@ -34,9 +35,10 @@ export const fetchSensorData = createAsyncThunk(
 //Get All Sensors Data
 export const getAllSensorsData = createAsyncThunk(
     'sensor/getAllSensorsData',
-    async () => {
+    async (_,{dispatch}) => {
         try {
             if (ethereum) {
+                dispatch(setLoadingState(true))
                 const sensorDataContract = createSensorDataContract()
 
                 const availableSensorsData = await sensorDataContract.getAllSensorsData()
@@ -46,6 +48,8 @@ export const getAllSensorsData = createAsyncThunk(
                     createAt: sensor.createAt,
                     value: parseInt(sensor.value),
                 }))
+                dispatch(setLoadingState(false))
+
                 return structuredSensorsData
             } else {
                 console.log('Ethereum is not present')

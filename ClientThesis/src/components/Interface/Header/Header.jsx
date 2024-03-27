@@ -37,7 +37,7 @@ const Header = () => {
     return (
         <header 
         className='
-            absolute top-0 z-20
+            absolute top-0 z-40
             w-screen px-4 py-2.5
             flex justify-between items-center
             bg-transparent text-black text-3xl           

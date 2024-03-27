@@ -7,10 +7,12 @@ import History from "../pages/History/History";
 
 import Layout from "../components/Interface/Layout/Layout";
 
-import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 import Select from "../pages/History/Select";
+import Display from "../pages/Display/Display";
+import CropDetails from "../pages/Display/CropDetails";
 
 
 const publicRoutes = [
@@ -24,6 +26,8 @@ const publicRoutes = [
 const privateRoutes = [
     {path: '/menu',component: Menu},
     {path: '/menu/dashboard', component: Dashboard},
+    {path: '/menu/crops-display', component: Display},
+    {path: '/menu/crops-display/detail/:cropID', component: CropDetails},
     {path: '/menu/form', component: Form},
     {path: '/menu/history/select', component: Select},
     {path: '/menu/history/:deviceType', component: History},

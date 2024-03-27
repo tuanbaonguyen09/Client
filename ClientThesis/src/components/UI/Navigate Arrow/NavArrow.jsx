@@ -36,13 +36,14 @@ const NavArrow = ({direction ="top", name ="underfined", to ="/", className=""})
                 }}
                 onClick={() => navigate(to)}
                 className={`
-                flex
+                flex z-50
                 absolute items-center
                 justify-center
                 bg-transparent 
                 text-primary-400
                 ${className}
                 laptop:hidden
+                cursor-pointer  
                 `}>
                     <p className='font-bold text-lg uppercase'>{name}</p>
                     <button>

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 
 
 const initialState ={
-    isConnected: true,
+    isConnected: false,
     currentAccount: '',
 }
 
