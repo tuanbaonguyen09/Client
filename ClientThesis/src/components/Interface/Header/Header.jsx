@@ -1,38 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { letSideBarOpen } from '../../../redux/Sidebar/Slice';
-import {motion} from 'framer-motion'
-import { resetAccount } from '../../../redux/Connect/Slice';
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useLocation} from 'react-router-dom'
+
 const Header = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    
-    const isConnected = useSelector((state) => state.login.isConnected)
+    const location = useLocation()
+    const isHome = location.pathname === '/'
 
-    const textVariant ={
-        default: {
-            visibility: 'hidden'
-        },
-        hover:{
-            visibility: 'visible'
-        }
-    }
 
-    const mainVariant = {
-        default: {
-            background: 'transparent'
-        },
-        hover:{
-            background: '#79ac78',
-            width: 80,
-        }
-    }
-
-    const handleLogOut = () => {
-        dispatch(resetAccount())
-        navigate('/')
-    }
+    const BackButton = () => (
+        <div onClick={() => navigate(-1)} className='cursor-pointer'>
+            <FontAwesomeIcon icon='fa-solid fa-chevron-left' className='text-2xl text-primary-500'/>
+        </div>
+    )
 
     return (
         <header 
@@ -42,35 +24,10 @@ const Header = () => {
             flex justify-between items-center
             bg-transparent text-black text-3xl           
         '>  
-            {
-                isConnected ?
-                <motion.div 
-                    onClick={handleLogOut}
-                    initial="default"
-                    whileHover="hover"
-                    animate="default"
-                    variants={mainVariant}
-                    className='
-                    group w-6 h-6 rounded-full
-                    flex justify-center items-center
-                    bg-white '>
-
-                        <FontAwesomeIcon icon="fa-solid fa-arrow-right-from-bracket" 
-                        className='
-                        group-hover:text-primary-700
-                        group-hover:hidden
-                        text-2xl text-primary-500'/> 
-                    <motion.p
-                    className='absolute text-sm font-semibold text-main-100'
-                    variants={textVariant}
-                    >Log out</motion.p>
-                </motion.div>
-                :
-                <div></div>
-            }
+            {!isHome ? <BackButton className='bottom-6 flex-row-reverse' direction="left" name="Back" to={-1}/> : <div></div>}
 
             <button className='flex hover:cursor-pointer' onClick={() => dispatch(letSideBarOpen())}>
-                <FontAwesomeIcon icon="fa-solid fa-bars" className='text-primary-400'/>
+                <FontAwesomeIcon icon="fa-solid fa-bars" className='text-primary-500'/>
             </button>
         </header>
     )

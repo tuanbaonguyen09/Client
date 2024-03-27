@@ -11,7 +11,6 @@ function App() {
     // const navigation = useNavigation();
     return (
         <Router>
-
             <MainRoutes/>
         </Router>
     )

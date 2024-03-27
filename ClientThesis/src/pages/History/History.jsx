@@ -203,7 +203,7 @@ const History = () => {
                         className='font-mono text-xs self-start underline text-primary-400 -mt-3 ml-0.5'>
                             View more at EtherScan
                         </a>
-                        <PaginatedItems itemsPerPage={8} items={deviceType=== "controller" ? reversedControllerInfo : sensorsData}/>
+                        <PaginatedItems itemsPerPage={5} items={deviceType=== "controller" ? reversedControllerInfo : sensorsData}/>
                         <div className='absolute bottom-1 right-0 p-[inherit]'>
                             <FontAwesomeIcon 
                             onClick={deviceType=== "controller" ? handleExportControllerInfoToExcel :handleExportSensorsDataToExcel}

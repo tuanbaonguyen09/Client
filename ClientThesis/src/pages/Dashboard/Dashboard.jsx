@@ -11,7 +11,7 @@ const Dashboard = () => {
         "
         >
             <div className="
-                grid grid-rows-6 relative h-full
+                grid grid-rows-7 relative h-full
                 gap-y-3
             ">
             <div className="row-span-3 relative mx-1">  
@@ -30,7 +30,7 @@ const Dashboard = () => {
             <div className="row-span-2 relative w-full">
                 <SensorList/>
             </div>
-            <div className="row-span-1 relative w-full">
+            <div className="row-span-2 relative w-full">
                 <Controller/>
             </div>
             </div>
